@@ -7,7 +7,8 @@ export const useTodo = () => {
 
     const addTodo = async (todo: TodoType) => {
         try {
-            const data = await todoApi.createTodo(todo);
+            const data = await todoApi.createTodo(todo)
+            console.log(data);
             if (data.inserted?.length > 0) {
                 setTodos(prev => [...prev, data.inserted[0]]);
             }
