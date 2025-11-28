@@ -9,5 +9,6 @@ const Envs = {
     FIREBASE_APP_ID: ENVS.VITE_FIREBASE_APP_ID,
     FIREBASE_MEASUREMENT_ID: ENVS.VITE_FIREBASE_MEASUREMENT_ID,
 };
+
                                       
 export default Envs;
