@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-    appKey: Envs.FIREBASE_API_KEY,
+    apiKey: Envs.FIREBASE_API_KEY,
     authDomain: Envs.FIREBASE_DOMAIN,
     projectId: Envs.FIREBASE_PROJECT_ID,
     storageBucket: Envs.FIREBASE_STORAGE_BUCKET,
