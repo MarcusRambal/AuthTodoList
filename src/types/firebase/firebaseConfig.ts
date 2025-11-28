@@ -12,6 +12,16 @@ const firebaseConfig = {
     measurementId: Envs.FIREBASE_MEASUREMENT_ID,
 };
 
+// Verificación temprana para detectar builds sin variables VITE_
+if (!firebaseConfig.projectId) {
+    // Mensaje claro para debugging en consola del cliente/CI
+    // No ocultamos la comprobación: esto ayuda a localizar por qué falta projectId
+    // Lanzamos un error descriptivo para que la pila de la app muestre la causa.
+    // Nota: quita o suaviza esta comprobación en producción una vez resuelto.
+    // eslint-disable-next-line no-console
+    console.error('Firebase configuration missing required value: projectId', firebaseConfig);
+    throw new Error('Missing Firebase configuration value: "projectId". Ensure VITE_FIREBASE_PROJECT_ID is set at build time.');
+}
 
 export const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
