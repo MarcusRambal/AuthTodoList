@@ -9,7 +9,7 @@ export const useTodo = () => {
         try {
             const data = await todoApi.createTodo(todo);
             if (data.inserted?.length > 0) {
-                setTodos([...todos, data.inserted[0]]);
+                setTodos(prev => [...prev, data.inserted[0]]);
             }
         } catch (error) {
             console.error('Error adding todo:', error);
@@ -21,7 +21,7 @@ export const useTodo = () => {
         try {
             await todoApi.deleteTodo(id);
    
-            setTodos(todos.filter(todo => todo._id !== id));
+            setTodos(prev => prev.filter(todo => todo._id !== id));
         } catch (error) {
             console.error('Error removing todo:', error);
             throw error;
@@ -36,7 +36,7 @@ export const useTodo = () => {
                 updatedAt
             });
             
-            setTodos(todos.map(todo => 
+            setTodos(prev => prev.map(todo => 
                 todo._id === id 
                     ? { ...todo, done: true, updatedAt } 
                     : todo
@@ -51,7 +51,7 @@ export const useTodo = () => {
         const fetchTodos = async () => {
             try {
                 const data = await todoApi.getTodos();
-                setTodos(data);
+                setTodos(Array.isArray(data) ? data : []);
             } catch (error) {
                 console.error('Error fetching todos:', error);
                 throw error;
