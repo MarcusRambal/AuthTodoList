@@ -7,7 +7,7 @@ import "./types/firebase/firebaseConfig.ts";
 import * as Sentry from "@sentry/react";
 
 Sentry.init({
-  dsn: "https://o4510444352045056.ingest.us.sentry.io/4510444361809920",
+  dsn: import.meta.env.VITE_SENTRY_DSN,
   sendDefaultPii: true,
 });
 
