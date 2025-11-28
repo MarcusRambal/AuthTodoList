@@ -1,4 +1,3 @@
-
 import "./App.css";
 import { AuthenticatorProvider } from "./contexts/Authenticator";
 import Root from "./pages/root";
@@ -8,7 +7,7 @@ function App() {
     <AuthenticatorProvider>
       <Root />
     </AuthenticatorProvider>
-  )
+  );
 }
 
-export default App
+export default App;
