@@ -40,7 +40,7 @@ export const AuthenticatorProvider = ({ children }: { children: React.ReactNode 
         const checkAuth = async () => {
             const token = localStorage.getItem("token");
             if (!token) {
-                setIsAuthenticated(false);
+                setIsAuthenticated(true);
                 setLoading(false);
                 return;
             }
