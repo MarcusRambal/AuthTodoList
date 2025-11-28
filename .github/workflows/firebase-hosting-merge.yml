@@ -1,3 +1,4 @@
+# Solución Definitiva: Fuerza la creación del archivo .env y diagnostica el contenido.
 
 name: Deploy to Firebase Hosting on merge
 
@@ -12,22 +13,35 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      # 1. Configurar Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Recomendado usar versión LTS
-
+          node-version: '20'
+          
+      # 2. 💡 PASO CRUCIAL: Crear el archivo .env con los secretos
+      # Usamos el signo '>' para crear el archivo y '>>' para añadir líneas.
+      - name: Create .env file for build
+        run: |
+          echo "VITE_FIREBASE_API_KEY=${{ secrets.VITE_FIREBASE_API_KEY }}" > .env
+          echo "VITE_FIREBASE_DOMAIN=${{ secrets.VITE_FIREBASE_DOMAIN }}" >> .env
+          echo "VITE_FIREBASE_PROJECT_ID=${{ secrets.VITE_FIREBASE_PROJECT_ID }}" >> .env
+          echo "VITE_FIREBASE_STORAGE_BUCKET=${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}" >> .env
+          echo "VITE_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}" >> .env
+          echo "VITE_FIREBASE_APP_ID=${{ secrets.VITE_FIREBASE_APP_ID }}" >> .env
+          echo "VITE_FIREBASE_MEASUREMENT_ID=${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}" >> .env
+          
+      # 3. 🔍 DIAGNÓSTICO: Imprimir el contenido del archivo .env
+      # ESTO MOSTRARÁ LA VERDADERA CAUSA DEL PROBLEMA.
+      - name: "Diagnostic: Check .env file content"
+        run: cat .env
+        
+      # 4. Instalar y Compilar
+      # Vite ahora debe leer el .env recién creado.
       - name: Install and build
         run: npm ci && npm run build
-        env:
-          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
-          VITE_FIREBASE_DOMAIN: ${{ secrets.VITE_FIREBASE_DOMAIN }}
-          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
-          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
-          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
-          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
-          VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.VITE_FIREBASE_MEASUREMENT_ID }}
-          
+        
+      # 5. Despliegue a Firebase Hosting
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
